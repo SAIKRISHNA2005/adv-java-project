@@ -55,6 +55,11 @@
       </ul>
     </div>
   </div>
+
+  <!-- Floating Quick Request button -->
+  <button type="button" class="btn btn-success position-fixed" style="right: 1.25rem; bottom: 1.25rem; z-index: 1030; box-shadow: 0 0.5rem 1rem rgba(0,0,0,.15);" data-action="quick-add" data-entity="Request">
+    <i class="bi bi-plus-circle me-2"></i>New Request
+  </button>
 </div>
 <%@ include file="/WEB-INF/jsp/common/footer.jsp" %>
 </body>

@@ -15,8 +15,8 @@
     <div class="d-flex align-items-center justify-content-between mb-3">
         <h3 class="mb-0">Inventory Management</h3>
         <div>
-            <a href="addDonation.jsp" class="btn btn-success me-2"><i class="bi bi-plus-circle me-2"></i>Add New Item</a>
-            <button class="btn btn-outline-secondary"><i class="bi bi-download me-2"></i>Export</button>
+            <button class="btn btn-success me-2" type="button" data-action="quick-add" data-entity="Inventory"><i class="bi bi-plus-circle me-2"></i>Add New Item</button>
+            <button class="btn btn-outline-secondary" type="button"><i class="bi bi-download me-2"></i>Export</button>
         </div>
     </div>
     <div class="row g-3 mb-3">

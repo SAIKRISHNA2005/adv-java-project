@@ -16,7 +16,7 @@
         <h3 class="mb-0">Manage Users</h3>
         <div>
             <button class="btn btn-outline-secondary me-2"><i class="bi bi-download me-2"></i>Export</button>
-            <button class="btn btn-primary"><i class="bi bi-person-plus me-2"></i>Add User</button>
+            <button class="btn btn-primary" type="button" data-action="quick-add" data-entity="User"><i class="bi bi-person-plus me-2"></i>Add User</button>
         </div>
     </div>
 

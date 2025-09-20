@@ -53,7 +53,7 @@
                 <div class="card-header bg-primary text-white"><i class="bi bi-gift-fill me-2"></i>Add Donation</div>
                 <div class="card-body">
                     <p class="card-text">Submit donation details: food type, quantity, expiry date.</p>
-                    <a href="${pageContext.request.contextPath}/app/inventory/add" class="btn btn-primary"><i class="bi bi-plus-circle me-2"></i>Add Donation</a>
+                    <button type="button" class="btn btn-primary" data-action="quick-add" data-entity="Inventory"><i class="bi bi-plus-circle me-2"></i>Add Donation</button>
                 </div>
             </div>
         </div>

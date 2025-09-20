@@ -53,7 +53,7 @@
                 <div class="card-header bg-primary text-white"><i class="bi bi-bag-plus-fill me-2"></i>Bulk Supplies</div>
                 <div class="card-body">
                     <p class="card-text">Request bulk food items for distribution.</p>
-                    <a href="${pageContext.request.contextPath}/app/requests/ngo" class="btn btn-primary">Request Supplies</a>
+                    <button type="button" class="btn btn-primary" data-action="quick-add" data-entity="Request">Request Supplies</button>
                 </div>
             </div>
         </div>

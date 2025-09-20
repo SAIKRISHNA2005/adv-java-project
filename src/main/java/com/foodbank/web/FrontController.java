@@ -37,7 +37,6 @@ public class FrontController extends HttpServlet {
 
         // Inventory
         routeToJsp.put("/inventory/manage", "/WEB-INF/jsp/inventory/manageInventory.jsp");
-        routeToJsp.put("/inventory/add", "/WEB-INF/jsp/inventory/addDonation.jsp");
         routeToJsp.put("/inventory/view", "/WEB-INF/jsp/inventory/viewDonations.jsp");
         routeToJsp.put("/inventory/edit", "/WEB-INF/jsp/inventory/editInventory.jsp");
 
@@ -47,10 +46,8 @@ public class FrontController extends HttpServlet {
         routeToJsp.put("/distribution/routes", "/WEB-INF/jsp/distribution/distributionRoute.jsp");
 
         // Requests
-        routeToJsp.put("/requests/new", "/WEB-INF/jsp/requests/requestFood.jsp");
         routeToJsp.put("/requests/track", "/WEB-INF/jsp/requests/trackRequests.jsp");
         routeToJsp.put("/requests/admin", "/WEB-INF/jsp/requests/adminRequests.jsp");
-        routeToJsp.put("/requests/ngo", "/WEB-INF/jsp/requests/ngoRequest.jsp");
 
         // Reports
         routeToJsp.put("/reports/history", "/WEB-INF/jsp/reports/donationHistory.jsp");
@@ -173,10 +170,19 @@ public class FrontController extends HttpServlet {
                 break;
             case "/profile/delete":
                 if (request.getSession(false) != null) request.getSession(false).invalidate();
-                response.sendRedirect(request.getContextPath() + "/index.jsp");
+                response.sendRedirect(request.getContextPath() + "/index.jsp?flash=Account%20deleted");
                 break;
             case "/preferences/save":
-                response.sendRedirect(request.getContextPath() + "/app/profile");
+                response.sendRedirect(request.getContextPath() + "/app/profile?flash=Preferences%20saved");
+                break;
+            case "/inventory/add":
+                response.sendRedirect(request.getContextPath() + "/app/inventory/view?flash=Donation%20added");
+                break;
+            case "/requests/submit":
+                response.sendRedirect(request.getContextPath() + "/app/requests/track?flash=Request%20submitted");
+                break;
+            case "/admin/users/add":
+                response.sendRedirect(request.getContextPath() + "/app/admin/users?flash=User%20added");
                 break;
             default:
                 // Fallback: try GET route or 404
@@ -190,9 +196,13 @@ public class FrontController extends HttpServlet {
     }
 
     private boolean isAuthorized(String role, String path) {
-        // Unauthenticated allowed paths
+        // Publicly accessible routes regardless of session
+        if (path.startsWith("/login") || path.startsWith("/register") || path.startsWith("/forgot-password")) {
+            return true;
+        }
+        // Unauthenticated users: everything else is blocked
         if (role == null) {
-            return path.startsWith("/login") || path.startsWith("/register") || path.startsWith("/forgot-password");
+            return false;
         }
         // Admin can access everything
         if ("admin".equals(role)) return true;
@@ -203,9 +213,7 @@ public class FrontController extends HttpServlet {
                     || path.equals("/profile") || path.equals("/profile/donor")
                     || path.startsWith("/reports/history")
                     || path.startsWith("/reports/donor/")
-                    || path.startsWith("/requests/new")
                     || path.startsWith("/requests/track")
-                    || path.startsWith("/inventory/add")
                     || path.startsWith("/inventory/view")
                     || path.startsWith("/alerts/expiry")
                     || path.startsWith("/dashboard/notifications");
@@ -214,7 +222,6 @@ public class FrontController extends HttpServlet {
         if ("recipient".equals(role)) {
             return path.equals("/dashboard/recipient")
                     || path.equals("/profile") || path.equals("/profile/recipient")
-                    || path.startsWith("/requests/new")
                     || path.startsWith("/requests/track")
                     || path.startsWith("/alerts/notifications")
                     || path.startsWith("/dashboard/notifications");
@@ -223,7 +230,7 @@ public class FrontController extends HttpServlet {
         if ("ngo".equals(role)) {
             return path.equals("/dashboard/ngo")
                     || path.equals("/profile") || path.equals("/profile/ngo")
-                    || path.startsWith("/requests/ngo") || path.startsWith("/requests/new") || path.startsWith("/requests/track")
+                    || path.startsWith("/requests/track")
                     || path.startsWith("/distribution/assign")
                     || path.startsWith("/reports/beneficiaries")
                     || path.startsWith("/alerts/shortage") || path.startsWith("/alerts/surplus") || path.startsWith("/alerts/notifications")

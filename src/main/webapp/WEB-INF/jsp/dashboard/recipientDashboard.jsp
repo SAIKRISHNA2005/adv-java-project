@@ -53,7 +53,7 @@
                 <div class="card-header bg-success text-white"><i class="bi bi-bag-check-fill me-2"></i>Request Food</div>
                 <div class="card-body">
                     <p class="card-text">Request food from available inventory.</p>
-                    <a href="${pageContext.request.contextPath}/app/requests/new" class="btn btn-success">Request Now</a>
+                    <button type="button" class="btn btn-success" data-action="quick-add" data-entity="Request">Request Now</button>
                 </div>
             </div>
         </div>

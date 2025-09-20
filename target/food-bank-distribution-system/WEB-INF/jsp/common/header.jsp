@@ -1,7 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!-- Common Header / Navbar -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm sticky-top">
+<nav class="navbar navbar-expand-lg navbar-dark shadow-sm sticky-top navbar-gradient">
   <div class="container">
     <a class="navbar-brand d-flex align-items-center" href="${pageContext.request.contextPath}/index.jsp">
       <i class="bi bi-basket me-2"></i>
@@ -37,10 +37,10 @@
                 <a class="nav-link dropdown-toggle" href="#" id="inventoryMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-box-seam me-1"></i>Inventory</a>
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="inventoryMenu">
                   <li><a class="dropdown-item" href="${pageContext.request.contextPath}/app/inventory/manage">Manage</a></li>
-                  <li><a class="dropdown-item" href="${pageContext.request.contextPath}/app/inventory/add">Add Donation</a></li>
+                  
                   <li><a class="dropdown-item" href="${pageContext.request.contextPath}/app/inventory/view">View Donations</a></li>
                   <li><a class="dropdown-item" href="${pageContext.request.contextPath}/app/inventory/edit">Edit</a></li>
-                  <li><a class="dropdown-item" href="${pageContext.request.contextPath}/app/inventory/manage-bento">Bento Manager</a></li>
+                  <li><a class="dropdown-item" href="${pageContext.request.contextPath}/app/inventory/manage-bento">Inventory Manage</a></li>
                 </ul>
               </li>
               <li class="nav-item dropdown me-lg-2">
@@ -65,11 +65,10 @@
 
             <c:if test="${role eq 'donor'}">
               <li class="nav-item me-lg-2"><a class="nav-link" href="${pageContext.request.contextPath}/app/reports/history">My Donation History</a></li>
-              <li class="nav-item me-lg-2"><a class="nav-link" href="${pageContext.request.contextPath}/app/requests/new">Make a Donation</a></li>
+
             </c:if>
 
             <c:if test="${role eq 'recipient' || role eq 'ngo'}">
-              <li class="nav-item me-lg-2"><a class="nav-link" href="${pageContext.request.contextPath}/app/requests/new">Request Food</a></li>
               <li class="nav-item me-lg-2"><a class="nav-link" href="${pageContext.request.contextPath}/app/requests/track">Track Requests</a></li>
             </c:if>
 

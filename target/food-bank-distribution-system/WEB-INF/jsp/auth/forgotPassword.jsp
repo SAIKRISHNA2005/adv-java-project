@@ -11,7 +11,7 @@
 
 <%@ include file="/WEB-INF/jsp/common/header.jsp" %>
 
-<div class="container">
+<div class="container pb-safe">
     <div class="row justify-content-center mt-5">
         <div class="col-md-5">
             <div class="card shadow">

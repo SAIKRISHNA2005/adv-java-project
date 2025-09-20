@@ -40,6 +40,25 @@ footer{
 	backdrop-filter:saturate(120%) blur(2px);
 }
 
+/* Navbar and Footer theming to match index.jsp */
+.navbar-gradient{
+  background: linear-gradient(90deg, #6f42c1, #0d6efd, #20c997);
+}
+.navbar-gradient .navbar-brand, .navbar-gradient .nav-link, .navbar-gradient .navbar-toggler{ color:#fff; }
+.navbar-gradient .dropdown-menu{ border-radius:.75rem; }
+
+.footer-gradient{
+  background: linear-gradient(90deg, rgba(111,66,193,.95), rgba(13,110,253,.95));
+  color:#fff;
+}
+.footer-gradient a{ color:#fff; opacity:.9; text-decoration: none; }
+.footer-gradient a:hover{ opacity:1; }
+
+/* Body blur when quick modal open */
+.fb-blur main, .fb-blur .container, .fb-blur .section, .fb-blur .card{
+	filter: blur(2px);
+}
+
 /* Animations */
 @keyframes fadeInUp{
 	0%{opacity:0; transform:translateY(16px)}
@@ -54,6 +73,7 @@ footer{
 
 /* Utilities */
 .section{ padding:4rem 0; }
+.pb-safe{ padding-bottom: 2.5rem !important; } /* ensure content doesn't clash with footer */
 .gradient-bg{
 	background:linear-gradient(135deg, rgba(13,110,253,0.08), rgba(25,135,84,0.08));
 }
@@ -83,4 +103,15 @@ footer{
 /* Reveal utility (JS-enhanced) */
 .reveal { opacity: 0; transform: translateY(16px); transition: .5s ease; }
 .reveal-show { opacity: 1; transform: none; }
+
+/* Marquee (infinite horizontal scroll) */
+.marquee{ --marquee-speed:30s; --marquee-gap:2rem; overflow:hidden; position:relative; }
+.marquee .marquee-track{ display:flex; width:max-content; gap:var(--marquee-gap); animation: marquee var(--marquee-speed) linear infinite; will-change:transform; }
+.marquee .marquee-group{ display:flex; gap:var(--marquee-gap); }
+.marquee:hover .marquee-track{ animation-play-state: paused; }
+
+@keyframes marquee{
+  from{ transform: translateX(0); }
+  to{ transform: translateX(-50%); }
+}
 
