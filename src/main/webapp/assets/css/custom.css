@@ -1,0 +1,82 @@
+/* Global theme for Food Bank Distribution System */
+:root{
+	--fb-primary:#0d6efd;
+	--fb-secondary:#6c757d;
+	--fb-success:#198754;
+	--fb-accent:#f8f9fa;
+	--fb-hero-bg:linear-gradient(135deg, rgba(13,110,253,0.12), rgba(25,135,84,0.12));
+}
+
+body{
+	font-family:'Inter', system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+	background-color:#ffffff;
+	color:#212529;
+}
+
+.hero-section{
+	background:var(--fb-hero-bg);
+	position:relative;
+}
+
+.hero-section::after{
+	content:"";
+	position:absolute;
+	inset:0;
+	background-image:radial-gradient(rgba(13,110,253,0.15) 1px, transparent 1px);
+	background-size:20px 20px;
+	opacity:.5;
+	pointer-events:none;
+}
+
+.card{
+	border-radius:0.75rem;
+}
+
+.navbar-brand{
+	font-weight:700;
+}
+
+footer{
+	backdrop-filter:saturate(120%) blur(2px);
+}
+
+/* Animations */
+@keyframes fadeInUp{
+	0%{opacity:0; transform:translateY(16px)}
+	100%{opacity:1; transform:translateY(0)}
+}
+
+.animate-fade-up{ animation:fadeInUp .6s ease both; }
+.animate-delay-1{ animation-delay:.1s }
+.animate-delay-2{ animation-delay:.2s }
+.animate-delay-3{ animation-delay:.3s }
+.animate-delay-4{ animation-delay:.4s }
+
+/* Utilities */
+.section{ padding:4rem 0; }
+.gradient-bg{
+	background:linear-gradient(135deg, rgba(13,110,253,0.08), rgba(25,135,84,0.08));
+}
+.card-hover{ transition:transform .2s ease, box-shadow .2s ease; }
+.card-hover:hover{ transform:translateY(-4px); box-shadow:0 .5rem 1.5rem rgba(0,0,0,.08); }
+.btn-gradient{
+	background:linear-gradient(90deg, var(--fb-primary), var(--fb-success));
+	color:#fff; border:0;
+}
+.btn-gradient:hover{ filter:brightness(.95); color:#fff; }
+
+/* Components */
+.feature-icon{ width:48px; height:48px; display:inline-flex; align-items:center; justify-content:center; border-radius:12px; background:#e7f1ff; color:var(--fb-primary); }
+.stat-card h2{ font-weight:700; }
+.chart-placeholder{ height:220px; background:repeating-linear-gradient(45deg, #f1f3f5, #f1f3f5 10px, #ffffff 10px, #ffffff 20px); border-radius:12px; }
+.timeline{ list-style:none; margin:0; padding:0; }
+.timeline li{ position:relative; padding-left:1.5rem; margin-bottom:.75rem; }
+.timeline li::before{ content:""; position:absolute; left:0; top:.4rem; width:.5rem; height:.5rem; border-radius:50%; background:var(--fb-primary); }
+
+/* Floating labels helpers */
+.form-floating>.form-control::placeholder{ color:transparent; }
+.form-floating>.form-control:focus::placeholder{ color:transparent; }
+.input-icon{ position:relative; }
+.input-icon .bi{ position:absolute; left:12px; top:50%; transform:translateY(-50%); color:#6c757d; }
+.input-icon input{ padding-left:2.2rem; }
+
