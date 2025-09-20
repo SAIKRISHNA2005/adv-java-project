@@ -87,7 +87,7 @@ public class FrontController extends HttpServlet {
         routeToJsp.put("/profile/donor", "/WEB-INF/jsp/donor/profile.jsp");
         routeToJsp.put("/profile/recipient", "/WEB-INF/jsp/recipient/profile.jsp");
         routeToJsp.put("/profile/admin", "/WEB-INF/jsp/admin/profile.jsp");
-        routeToJsp.put("/profile/ngo", "/WEB-INF/jsp/recipient/profile.jsp");
+        routeToJsp.put("/profile/ngo", "/WEB-INF/jsp/ngo/profile.jsp");
 
         // Donor-specific reports
         routeToJsp.put("/reports/donor/overview", "/WEB-INF/jsp/reports/donor/overview.jsp");
@@ -223,7 +223,7 @@ public class FrontController extends HttpServlet {
         if ("ngo".equals(role)) {
             return path.equals("/dashboard/ngo")
                     || path.equals("/profile") || path.equals("/profile/ngo")
-                    || path.startsWith("/requests/ngo") || path.startsWith("/requests/new")
+                    || path.startsWith("/requests/ngo") || path.startsWith("/requests/new") || path.startsWith("/requests/track")
                     || path.startsWith("/distribution/assign")
                     || path.startsWith("/reports/beneficiaries")
                     || path.startsWith("/alerts/shortage") || path.startsWith("/alerts/surplus") || path.startsWith("/alerts/notifications")
