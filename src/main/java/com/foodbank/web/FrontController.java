@@ -64,6 +64,34 @@ public class FrontController extends HttpServlet {
         routeToJsp.put("/alerts/surplus", "/WEB-INF/jsp/alerts/surplusAlert.jsp");
         routeToJsp.put("/alerts/notifications", "/WEB-INF/jsp/alerts/notifications.jsp");
 
+        // Reports - extended
+        routeToJsp.put("/reports/analytics", "/WEB-INF/jsp/reports/analytics.jsp");
+        routeToJsp.put("/reports/export/pdf", "/WEB-INF/jsp/reports/analytics.jsp"); // placeholder
+        routeToJsp.put("/reports/export/excel", "/WEB-INF/jsp/reports/analytics.jsp"); // placeholder
+
+        // Inventory - extended
+        routeToJsp.put("/inventory/manage-bento", "/WEB-INF/jsp/inventory/bentoManageInventory.jsp");
+
+        // Requests - extended
+        routeToJsp.put("/requests/matching", "/WEB-INF/jsp/requests/bentoRequestMatching.jsp");
+        routeToJsp.put("/requests/track-bento", "/WEB-INF/jsp/requests/bentoTrackRequests.jsp");
+
+        // Distribution - extended
+        routeToJsp.put("/distribution/tracking-bento", "/WEB-INF/jsp/distribution/bentoDistributionTracking.jsp");
+
+        // Dashboard extras
+        routeToJsp.put("/dashboard/notifications", "/WEB-INF/jsp/dashboard/notificationsCenter.jsp");
+
+        // Profile
+        routeToJsp.put("/profile", "/WEB-INF/jsp/auth/profile.jsp");
+        routeToJsp.put("/profile/donor", "/WEB-INF/jsp/donor/profile.jsp");
+        routeToJsp.put("/profile/recipient", "/WEB-INF/jsp/recipient/profile.jsp");
+        routeToJsp.put("/profile/admin", "/WEB-INF/jsp/admin/profile.jsp");
+        routeToJsp.put("/profile/ngo", "/WEB-INF/jsp/recipient/profile.jsp");
+
+        // Donor-specific reports
+        routeToJsp.put("/reports/donor/overview", "/WEB-INF/jsp/reports/donor/overview.jsp");
+
         // Admin
         routeToJsp.put("/admin/users", "/WEB-INF/jsp/admin/manageUsers.jsp");
     }
@@ -89,6 +117,20 @@ public class FrontController extends HttpServlet {
             forward(request, response, "/WEB-INF/jsp/errors/404.jsp");
             return;
         }
+        // Role-based access guard
+        String role = null;
+        if (request.getSession(false) != null) {
+            Object r = request.getSession(false).getAttribute("userRole");
+            role = (r == null) ? null : r.toString();
+        }
+        if (!isAuthorized(role, path)) {
+            if (role == null) {
+                response.sendRedirect(request.getContextPath() + "/app/login");
+            } else {
+                response.sendRedirect(request.getContextPath() + "/app/dashboard/" + role);
+            }
+            return;
+        }
         forward(request, response, target);
     }
 
@@ -101,16 +143,14 @@ public class FrontController extends HttpServlet {
             return;
         }
         switch (path) {
-            case "/login":
-                // TODO: authenticate; for now route by role param
+            case "/login": {
+                // Simulated auth: set role from form
                 String role = request.getParameter("role");
-                if (role == null || role.isEmpty()) {
-                    role = "recipient";
-                }
+                if (role == null || role.isEmpty()) role = "recipient";
                 request.getSession(true).setAttribute("userRole", role);
-                String dest = "/app/dashboard/" + role;
-                response.sendRedirect(request.getContextPath() + dest);
+                response.sendRedirect(request.getContextPath() + "/app/dashboard/" + role);
                 break;
+            }
             case "/register/donor":
                 request.getSession(true).setAttribute("userRole", "donor");
                 response.sendRedirect(request.getContextPath() + "/app/dashboard/donor");
@@ -123,8 +163,23 @@ public class FrontController extends HttpServlet {
                 request.getSession(true).setAttribute("userRole", "ngo");
                 response.sendRedirect(request.getContextPath() + "/app/dashboard/ngo");
                 break;
+            case "/profile/update":
+                // Pretend to save; redirect back to per-role profile
+                String roleAfterUpdate = (request.getSession(false) != null && request.getSession(false).getAttribute("userRole") != null)
+                        ? request.getSession(false).getAttribute("userRole").toString()
+                        : null;
+                String profilePath = (roleAfterUpdate == null) ? "/app/login" : "/app/profile/" + roleAfterUpdate;
+                response.sendRedirect(request.getContextPath() + profilePath);
+                break;
+            case "/profile/delete":
+                if (request.getSession(false) != null) request.getSession(false).invalidate();
+                response.sendRedirect(request.getContextPath() + "/index.jsp");
+                break;
+            case "/preferences/save":
+                response.sendRedirect(request.getContextPath() + "/app/profile");
+                break;
             default:
-                // For other POSTs not yet implemented, fallback to GET route
+                // Fallback: try GET route or 404
                 String target = routeToJsp.get(path);
                 if (target != null) {
                     forward(request, response, target);
@@ -132,6 +187,50 @@ public class FrontController extends HttpServlet {
                     forward(request, response, "/WEB-INF/jsp/errors/404.jsp");
                 }
         }
+    }
+
+    private boolean isAuthorized(String role, String path) {
+        // Unauthenticated allowed paths
+        if (role == null) {
+            return path.startsWith("/login") || path.startsWith("/register") || path.startsWith("/forgot-password");
+        }
+        // Admin can access everything
+        if ("admin".equals(role)) return true;
+
+        // Donor permissions
+        if ("donor".equals(role)) {
+            return path.equals("/dashboard/donor")
+                    || path.equals("/profile") || path.equals("/profile/donor")
+                    || path.startsWith("/reports/history")
+                    || path.startsWith("/reports/donor/")
+                    || path.startsWith("/requests/new")
+                    || path.startsWith("/requests/track")
+                    || path.startsWith("/inventory/add")
+                    || path.startsWith("/inventory/view")
+                    || path.startsWith("/alerts/expiry")
+                    || path.startsWith("/dashboard/notifications");
+        }
+        // Recipient permissions
+        if ("recipient".equals(role)) {
+            return path.equals("/dashboard/recipient")
+                    || path.equals("/profile") || path.equals("/profile/recipient")
+                    || path.startsWith("/requests/new")
+                    || path.startsWith("/requests/track")
+                    || path.startsWith("/alerts/notifications")
+                    || path.startsWith("/dashboard/notifications");
+        }
+        // NGO permissions
+        if ("ngo".equals(role)) {
+            return path.equals("/dashboard/ngo")
+                    || path.equals("/profile") || path.equals("/profile/ngo")
+                    || path.startsWith("/requests/ngo") || path.startsWith("/requests/new")
+                    || path.startsWith("/distribution/assign")
+                    || path.startsWith("/reports/beneficiaries")
+                    || path.startsWith("/alerts/shortage") || path.startsWith("/alerts/surplus") || path.startsWith("/alerts/notifications")
+                    || path.startsWith("/dashboard/notifications");
+        }
+        // Default deny
+        return false;
     }
 
     private void forward(HttpServletRequest request, HttpServletResponse response, String view)

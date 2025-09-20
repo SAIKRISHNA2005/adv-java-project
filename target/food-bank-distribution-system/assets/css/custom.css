@@ -80,3 +80,7 @@ footer{
 .input-icon .bi{ position:absolute; left:12px; top:50%; transform:translateY(-50%); color:#6c757d; }
 .input-icon input{ padding-left:2.2rem; }
 
+/* Reveal utility (JS-enhanced) */
+.reveal { opacity: 0; transform: translateY(16px); transition: .5s ease; }
+.reveal-show { opacity: 1; transform: none; }
+

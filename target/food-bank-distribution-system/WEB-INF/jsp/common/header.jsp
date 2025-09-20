@@ -15,9 +15,64 @@
         <c:choose>
           <c:when test="${not empty sessionScope.userRole}">
             <c:set var="role" value="${sessionScope.userRole}" />
+            <!-- Common for all logged-in users -->
             <li class="nav-item me-lg-2">
               <a class="nav-link" href="${pageContext.request.contextPath}/app/dashboard/${role}"><i class="bi bi-speedometer2 me-1"></i>Dashboard</a>
             </li>
+            <li class="nav-item me-lg-2">
+              <a class="nav-link" href="${pageContext.request.contextPath}/app/profile/${role}"><i class="bi bi-person-circle me-1"></i>Profile</a>
+            </li>
+
+            <!-- Role-based menus -->
+            <c:if test="${role eq 'admin'}">
+              <li class="nav-item dropdown me-lg-2">
+                <a class="nav-link dropdown-toggle" href="#" id="adminMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-gear-fill me-1"></i>Admin</a>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="adminMenu">
+                  <li><a class="dropdown-item" href="${pageContext.request.contextPath}/app/admin/users">Manage Users</a></li>
+                  <li><a class="dropdown-item" href="${pageContext.request.contextPath}/app/reports/analytics">Reports & Analytics</a></li>
+                  <li><a class="dropdown-item" href="${pageContext.request.contextPath}/app/requests/admin">Review Requests</a></li>
+                </ul>
+              </li>
+              <li class="nav-item dropdown me-lg-2">
+                <a class="nav-link dropdown-toggle" href="#" id="inventoryMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-box-seam me-1"></i>Inventory</a>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="inventoryMenu">
+                  <li><a class="dropdown-item" href="${pageContext.request.contextPath}/app/inventory/manage">Manage</a></li>
+                  <li><a class="dropdown-item" href="${pageContext.request.contextPath}/app/inventory/add">Add Donation</a></li>
+                  <li><a class="dropdown-item" href="${pageContext.request.contextPath}/app/inventory/view">View Donations</a></li>
+                  <li><a class="dropdown-item" href="${pageContext.request.contextPath}/app/inventory/edit">Edit</a></li>
+                  <li><a class="dropdown-item" href="${pageContext.request.contextPath}/app/inventory/manage-bento">Bento Manager</a></li>
+                </ul>
+              </li>
+              <li class="nav-item dropdown me-lg-2">
+                <a class="nav-link dropdown-toggle" href="#" id="distributionMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-truck me-1"></i>Distribution</a>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="distributionMenu">
+                  <li><a class="dropdown-item" href="${pageContext.request.contextPath}/app/distribution/assign">Assign</a></li>
+                  <li><a class="dropdown-item" href="${pageContext.request.contextPath}/app/distribution/schedule">Schedule</a></li>
+                  <li><a class="dropdown-item" href="${pageContext.request.contextPath}/app/distribution/routes">Routes</a></li>
+                  <li><a class="dropdown-item" href="${pageContext.request.contextPath}/app/distribution/tracking-bento">Tracking (Bento)</a></li>
+                </ul>
+              </li>
+              <li class="nav-item dropdown me-lg-2">
+                <a class="nav-link dropdown-toggle" href="#" id="alertsMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-bell me-1"></i>Alerts</a>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="alertsMenu">
+                  <li><a class="dropdown-item" href="${pageContext.request.contextPath}/app/alerts/expiry">Expiry</a></li>
+                  <li><a class="dropdown-item" href="${pageContext.request.contextPath}/app/alerts/shortage">Shortage</a></li>
+                  <li><a class="dropdown-item" href="${pageContext.request.contextPath}/app/alerts/surplus">Surplus</a></li>
+                  <li><a class="dropdown-item" href="${pageContext.request.contextPath}/app/alerts/notifications">Notifications</a></li>
+                </ul>
+              </li>
+            </c:if>
+
+            <c:if test="${role eq 'donor'}">
+              <li class="nav-item me-lg-2"><a class="nav-link" href="${pageContext.request.contextPath}/app/reports/history">My Donation History</a></li>
+              <li class="nav-item me-lg-2"><a class="nav-link" href="${pageContext.request.contextPath}/app/requests/new">Make a Donation</a></li>
+            </c:if>
+
+            <c:if test="${role eq 'recipient' || role eq 'ngo'}">
+              <li class="nav-item me-lg-2"><a class="nav-link" href="${pageContext.request.contextPath}/app/requests/new">Request Food</a></li>
+              <li class="nav-item me-lg-2"><a class="nav-link" href="${pageContext.request.contextPath}/app/requests/track">Track Requests</a></li>
+            </c:if>
+
             <li class="nav-item">
               <a class="nav-link" href="${pageContext.request.contextPath}/app/logout"><i class="bi bi-box-arrow-right me-1"></i>Logout</a>
             </li>
